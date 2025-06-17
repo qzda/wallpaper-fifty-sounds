@@ -144,7 +144,7 @@
     </div>
 
     <div class="xy">
-      <audio ref="audioRef" controls preload="auto" v-if="isDev">
+      <audio ref="audioRef" controls preload="auto" v-show="isDev">
         <source src="./assets/fifty-sound.mp3" type="audio/mp3" />
       </audio>
 
