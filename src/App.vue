@@ -1,51 +1,15 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import MaterialSymbolsVolumeOff from './components/MaterialSymbolsVolumeOff.vue'
-  import MaterialSymbolsVolumeUp from './components/MaterialSymbolsVolumeUp.vue'
+  import MaterialSymbolsVolumeOff from './components/Icons/MaterialSymbolsVolumeOff.vue'
+  import MaterialSymbolsVolumeUp from './components/Icons/MaterialSymbolsVolumeUp.vue'
+  import Card from './components/Card.vue'
+  import type { Cell, DisplayMode, Timestamp } from './type'
+  import { 清音, 濁音, 拗音 } from './data'
 
   const isDev = import.meta.env.DEV
 
-  /** 显示模式：
-   *  @key both 同时显示
-   *  @key hiragana 平假名
-   *  @key katakana 片假名
-   */
-  const displayMode = ref<'both' | 'hiragana' | 'katakana'>('both')
-
-  /** 平假名 */
-  const hiragana = [
-    ['あ', 'い', 'う', 'え', 'お'],
-    ['か', 'き', 'く', 'け', 'こ'],
-    ['さ', 'し', 'す', 'せ', 'そ'],
-    ['た', 'ち', 'つ', 'て', 'と'],
-    ['な', 'に', 'ぬ', 'ね', 'の'],
-    ['は', 'ひ', 'ふ', 'へ', 'ほ'],
-    ['ま', 'み', 'む', 'め', 'も'],
-    ['や', '', 'ゆ', '', 'よ'],
-    ['ら', 'り', 'る', 'れ', 'ろ'],
-    ['わ', '', '', '', 'を'],
-    ['ん', '', '', '', ''],
-  ]
-
-  /** 片假名 */
-  const katakana = [
-    ['ア', 'イ', 'ウ', 'エ', 'オ'],
-    ['カ', 'キ', 'ク', 'ケ', 'コ'],
-    ['サ', 'シ', 'ス', 'セ', 'ソ'],
-    ['タ', 'チ', 'ツ', 'テ', 'ト'],
-    ['ナ', 'ニ', 'ヌ', 'ネ', 'ノ'],
-    ['ハ', 'ヒ', 'フ', 'ヘ', 'ホ'],
-    ['マ', 'ミ', 'ム', 'メ', 'モ'],
-    ['ヤ', '', 'ユ', '', 'ヨ'],
-    ['ラ', 'リ', 'ル', 'レ', 'ロ'],
-    ['ワ', '', '', '', 'ヲ'],
-    ['ン', '', '', '', ''],
-  ] as const
-
-  type Timestamp = {
-    start: number
-    end: number
-  }
+  const displayMode = ref<DisplayMode>('both')
+  const tab = ref('0')
 
   const Timestamp: Record<string, Timestamp> = {
     あ: { start: 0, end: 0.8 },
@@ -108,12 +72,12 @@
   }
 
   const isSpeaking = ref(false)
-  function speak(text: string) {
-    if (!text || !audioRef.value || voiceDisabled.value || isSpeaking.value) return
+  function speak(cell: Cell) {
+    if (!audioRef.value || voiceDisabled.value || isSpeaking.value) return
 
-    const timestamp = Timestamp[text]
+    const timestamp = Timestamp[cell.hiragana]
     if (!timestamp) {
-      console.warn('No timestamp found for:', text)
+      console.warn('No timestamp found for:', cell)
       return
     }
 
@@ -160,62 +124,87 @@
 </script>
 
 <template>
-  <div class="xy-between">
-    <div class="xy child-borders">
-      <button @click="displayMode = 'both'">両方表示</button>
+  <div class="xy-between text-5">
+    <div class="xy gap-8">
+      <div class="xy">
+        <button class="btn" :class="displayMode === 'both' ? 'text-green' : null"
+          @click="displayMode = 'both'">両方表示</button>
+        <button class="btn" :class="displayMode === 'hiragana' ? 'text-green' : null"
+          @click="displayMode = 'hiragana'">あ</button>
+        <button class="btn" :class="displayMode === 'katakana' ? 'text-green' : null"
+          @click="displayMode = 'katakana'">ア</button>
+      </div>
 
-      <button @click="displayMode = 'hiragana'">あ</button>
-
-      <button @click="displayMode = 'katakana'">ア</button>
+      <div class="xy">
+        <button class="btn" :class="tab === '0' ? 'text-green' : null" @click="tab = '0'">すべて</button>
+        <button class="btn" :class="tab === '1' ? 'text-green' : null" @click="tab = '1'">清音</button>
+        <button class="btn" :class="tab === '2' ? 'text-green' : null" @click="tab = '2'">濁音</button>
+        <button class="btn" :class="tab === '3' ? 'text-green' : null" @click="tab = '3'">拗音</button>
+      </div>
     </div>
 
-    <div class="xy child-borders">
-      <audio
-        ref="audioRef"
-        controls
-        preload="auto"
-        v-if="isDev"
-      >
-        <source
-          src="./assets/fifty-sound.mp3"
-          type="audio/mp3"
-        />
+    <div class="xy">
+      <audio ref="audioRef" controls preload="auto" v-if="isDev">
+        <source src="./assets/fifty-sound.mp3" type="audio/mp3" />
       </audio>
 
-      <button
-        class="xy"
-        @click="toggleVoice"
-      >
+      <button class="btn xy-center" @click="toggleVoice">
         <MaterialSymbolsVolumeOff v-if="voiceDisabled" />
         <MaterialSymbolsVolumeUp v-else />
       </button>
     </div>
   </div>
 
-  <div class="flex-1 yx">
-    <div
-      v-for="(row, rowIndex) in hiragana"
-      :key="rowIndex"
-      class="flex-1 xy"
-    >
-      <div
-        v-for="(cell, cellIndex) in row"
-        :key="cellIndex"
-        class="flex-1 xy-center border cursor-pointer"
-        :class="[
-          cell || katakana[rowIndex][cellIndex] ? '' : 'hidden',
-          ['border', 'border-1', 'border-2', 'border-3', 'border-4', 'border-5', 'border-6'][
-            Math.floor(Math.random() * 7)
-          ],
-        ]"
-        @click="() => speak(cell)"
-      >
-        <span v-if="displayMode === 'hiragana' || displayMode === 'both'">
-          {{ cell }}
-        </span>
-        <span v-if="displayMode === 'katakana' || displayMode === 'both'">
-          {{ katakana[rowIndex][cellIndex] }}
-        </span>
+  <div class="xy">
+    <div v-if="tab === '0' || tab === '1'" class="flex-1">
+      <div class="text-8 text-center">清音</div>
+
+      <div class="box px-6 yx-between">
+        <div class="xy-between text-gray-500">
+          <div v-for="i in ['a', 'i', 'u', 'e', 'o']" class="flex-1 xy-center">{{ i }}</div>
+        </div>
+        <div v-for="(row, rowIndex) in 清音" :key="rowIndex" class="xy-between relative">
+          <div class="text-gray-500 absolute top-1.5 left--3">
+            {{ ['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', ''][rowIndex] }}
+          </div>
+          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"
+            :displayMode="displayMode" @click="() => cell && speak(cell)" />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="tab === '0' || tab === '2'" class="flex-1">
+      <div class="text-8 text-center">濁音</div>
+      <div class="box px-6 yx-between">
+        <div class="xy-between text-gray-500">
+          <div v-for="i in ['a', 'i', 'u', 'e', 'o']" class="flex-1 xy-center">{{ i }}</div>
+        </div>
+        <div v-for="(row, rowIndex) in 濁音" :key="rowIndex" class="xy-between relative">
+          <div class="text-gray-500 absolute top-1.5 left--3">
+            {{ ['g', 'z', 'd', 'b', 'p',][rowIndex] }}
+          </div>
+          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"
+            :displayMode="displayMode" @click="() => cell && speak(cell)" />
+
+        </div>
+      </div>
+    </div>
+
+    <div v-if="tab === '0' || tab === '3'" class="flex-1">
+      <div class="text-8 text-center">拗音</div>
+
+      <div class="box px-6 yx-between">
+        <div class="xy-between text-gray-500">
+          <div v-for="i in ['ya', 'yu', 'yo',]" class="flex-1 xy-center">{{ i }}</div>
+        </div>
+        <div v-for="(row, rowIndex) in 拗音" :key="rowIndex" class="xy-between relative">
+          <div class="text-gray-500 absolute top-1.5 left--3">
+            {{ ['k', 's', 't', 'n', 'h', 'm', 'r', 'g', 'j', 'b', 'p'][rowIndex] }}
+          </div>
+          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"
+            :displayMode="displayMode" @click="() => cell && speak(cell)" />
+
+        </div>
       </div>
     </div>
   </div>
