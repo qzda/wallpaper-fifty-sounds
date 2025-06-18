@@ -1,12 +1,12 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import MaterialSymbolsVolumeOff from './components/Icons/MaterialSymbolsVolumeOff.vue'
-  import MaterialSymbolsVolumeUp from './components/Icons/MaterialSymbolsVolumeUp.vue'
+  // import MaterialSymbolsVolumeOff from './components/Icons/MaterialSymbolsVolumeOff.vue'
+  // import MaterialSymbolsVolumeUp from './components/Icons/MaterialSymbolsVolumeUp.vue'
   import Card from './components/Card.vue'
-  import type { Cell, DisplayMode, Timestamp } from './type'
+  import type { DisplayMode, Timestamp } from './type'
   import { 清音, 濁音, 拗音 } from './data'
 
-  const isDev = import.meta.env.DEV
+  // const isDev = import.meta.env.DEV
 
   const displayMode = ref<DisplayMode>('both')
   const tab = ref('0')
@@ -71,56 +71,56 @@
     ん: { start: 45, end: 46 },
   }
 
-  const isSpeaking = ref(false)
-  function speak(cell: Cell) {
-    if (!audioRef.value || voiceDisabled.value || isSpeaking.value) return
+  // const isSpeaking = ref(false)
+  // function speak(cell: Cell) {
+  //   if (!audioRef.value || voiceDisabled.value || isSpeaking.value) return
 
-    const timestamp = Timestamp[cell.hiragana]
-    if (!timestamp) {
-      console.warn('No timestamp found for:', cell)
-      return
-    }
+  //   const timestamp = Timestamp[cell.hiragana]
+  //   if (!timestamp) {
+  //     console.warn('No timestamp found for:', cell)
+  //     return
+  //   }
 
-    const audio = audioRef.value
-    audio.pause()
-    audio.currentTime = 0
-    audio.currentTime = timestamp.start
+  //   const audio = audioRef.value
+  //   audio.pause()
+  //   audio.currentTime = 0
+  //   audio.currentTime = timestamp.start
 
-    // 创建时间更新处理函数
-    const timeUpdateHandler = () => {
-      if (audio.currentTime >= timestamp.end) {
-        audio.pause()
-        audio.removeEventListener('timeupdate', timeUpdateHandler)
-        isSpeaking.value = false
-      }
-    }
+  //   // 创建时间更新处理函数
+  //   const timeUpdateHandler = () => {
+  //     if (audio.currentTime >= timestamp.end) {
+  //       audio.pause()
+  //       audio.removeEventListener('timeupdate', timeUpdateHandler)
+  //       isSpeaking.value = false
+  //     }
+  //   }
 
-    // 添加时间更新监听
-    audio.addEventListener('timeupdate', timeUpdateHandler)
+  //   // 添加时间更新监听
+  //   audio.addEventListener('timeupdate', timeUpdateHandler)
 
-    // 开始播放
-    isSpeaking.value = true
-    audio.play().catch((error) => {
-      audio.pause()
-      audio.removeEventListener('timeupdate', timeUpdateHandler)
-      isSpeaking.value = false
-      console.error('Failed to play audio:', error)
-    })
-  }
+  //   // 开始播放
+  //   isSpeaking.value = true
+  //   audio.play().catch((error) => {
+  //     audio.pause()
+  //     audio.removeEventListener('timeupdate', timeUpdateHandler)
+  //     isSpeaking.value = false
+  //     console.error('Failed to play audio:', error)
+  //   })
+  // }
 
-  const voiceDisabled = ref(false)
-  const audioRef = ref<HTMLAudioElement | null>(null)
+  // const voiceDisabled = ref(false)
+  // const audioRef = ref<HTMLAudioElement | null>(null)
 
-  function toggleVoice() {
-    voiceDisabled.value = !voiceDisabled.value
-    if (audioRef.value) {
-      audioRef.value.muted = voiceDisabled.value
+  // function toggleVoice() {
+  //   voiceDisabled.value = !voiceDisabled.value
+  //   if (audioRef.value) {
+  //     audioRef.value.muted = voiceDisabled.value
 
-      if (voiceDisabled.value) {
-        audioRef.value.pause()
-      }
-    }
-  }
+  //     if (voiceDisabled.value) {
+  //       audioRef.value.pause()
+  //     }
+  //   }
+  // }
 </script>
 
 <template>
@@ -141,17 +141,17 @@
       <button class="btn" :class="tab === '3' ? 'text-green' : null" @click="tab = '3'">拗音</button>
     </div>
 
-    <div class="xy">
+    <!-- <div class="xy">
       <button class="btn xy-center" @click="toggleVoice">
         <MaterialSymbolsVolumeOff v-if="voiceDisabled" />
         <MaterialSymbolsVolumeUp v-else />
       </button>
-    </div>
+    </div> -->
   </div>
 
-  <audio ref="audioRef" controls preload="auto" v-show="isDev">
-    <source src="./assets/fifty-sound.mp3" type="audio/mp3" />
-  </audio>
+  <!-- <audio ref="audioRef" controls preload="auto" v-show="isDev">
+    <source src="./assets/fifty-sounds.mp3" type="audio/mp3" />
+  </audio> -->
 
   <div class="w-full xy flex-wrap">
     <div v-if="tab === '0' || tab === '1'" class="w-full flex-1">
@@ -165,8 +165,7 @@
           <div class="text-gray-500 absolute left--3">
             {{ ['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', ''][rowIndex] }}
           </div>
-          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"
-            :displayMode="displayMode" @click="() => cell && speak(cell)" />
+          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" :cell="cell" :displayMode="displayMode" />
         </div>
       </div>
     </div>
@@ -181,9 +180,7 @@
           <div class="text-gray-500 absolute left--3">
             {{ ['g', 'z', 'd', 'b', 'p',][rowIndex] }}
           </div>
-          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"
-            :displayMode="displayMode" @click="() => cell && speak(cell)" />
-
+          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" :cell="cell" :displayMode="displayMode" />
         </div>
       </div>
     </div>
@@ -199,9 +196,7 @@
           <div class="text-gray-500 absolute left--3">
             {{ ['k', 's', 't', 'n', 'h', 'm', 'r', 'g', 'j', 'b', 'p'][rowIndex] }}
           </div>
-          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"
-            :displayMode="displayMode" @click="() => cell && speak(cell)" />
-
+          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" :cell="cell" :displayMode="displayMode" />
         </div>
       </div>
     </div>
