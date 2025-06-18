@@ -124,30 +124,24 @@
 </script>
 
 <template>
-  <div class="xy-between text-5">
-    <div class="xy gap-8">
-      <div class="xy">
-        <button class="btn" :class="displayMode === 'both' ? 'text-green' : null"
-          @click="displayMode = 'both'">両方表示</button>
-        <button class="btn" :class="displayMode === 'hiragana' ? 'text-green' : null"
-          @click="displayMode = 'hiragana'">あ</button>
-        <button class="btn" :class="displayMode === 'katakana' ? 'text-green' : null"
-          @click="displayMode = 'katakana'">ア</button>
-      </div>
-
-      <div class="xy">
-        <button class="btn" :class="tab === '0' ? 'text-green' : null" @click="tab = '0'">すべて</button>
-        <button class="btn" :class="tab === '1' ? 'text-green' : null" @click="tab = '1'">清音</button>
-        <button class="btn" :class="tab === '2' ? 'text-green' : null" @click="tab = '2'">濁音</button>
-        <button class="btn" :class="tab === '3' ? 'text-green' : null" @click="tab = '3'">拗音</button>
-      </div>
+  <div class="xy flex-wrap gap-4">
+    <div class="xy">
+      <button class="btn" :class="displayMode === 'both' ? 'text-green' : null"
+        @click="displayMode = 'both'">両方表示</button>
+      <button class="btn" :class="displayMode === 'hiragana' ? 'text-green' : null"
+        @click="displayMode = 'hiragana'">あ</button>
+      <button class="btn" :class="displayMode === 'katakana' ? 'text-green' : null"
+        @click="displayMode = 'katakana'">ア</button>
     </div>
 
     <div class="xy">
-      <audio ref="audioRef" controls preload="auto" v-show="isDev">
-        <source src="./assets/fifty-sound.mp3" type="audio/mp3" />
-      </audio>
+      <button class="btn" :class="tab === '0' ? 'text-green' : null" @click="tab = '0'">すべて</button>
+      <button class="btn" :class="tab === '1' ? 'text-green' : null" @click="tab = '1'">清音</button>
+      <button class="btn" :class="tab === '2' ? 'text-green' : null" @click="tab = '2'">濁音</button>
+      <button class="btn" :class="tab === '3' ? 'text-green' : null" @click="tab = '3'">拗音</button>
+    </div>
 
+    <div class="xy">
       <button class="btn xy-center" @click="toggleVoice">
         <MaterialSymbolsVolumeOff v-if="voiceDisabled" />
         <MaterialSymbolsVolumeUp v-else />
@@ -155,16 +149,20 @@
     </div>
   </div>
 
-  <div class="xy">
-    <div v-if="tab === '0' || tab === '1'" class="flex-1">
-      <div class="text-8 text-center">清音</div>
+  <audio ref="audioRef" controls preload="auto" v-show="isDev">
+    <source src="./assets/fifty-sound.mp3" type="audio/mp3" />
+  </audio>
+
+  <div class="w-full xy flex-wrap">
+    <div v-if="tab === '0' || tab === '1'" class="w-full flex-1">
+      <div class="text-center font-bold">清音</div>
 
       <div class="box px-6 yx-between">
         <div class="xy-between text-gray-500">
           <div v-for="i in ['a', 'i', 'u', 'e', 'o']" class="flex-1 xy-center">{{ i }}</div>
         </div>
         <div v-for="(row, rowIndex) in 清音" :key="rowIndex" class="xy-between relative">
-          <div class="text-gray-500 absolute top-1.5 left--3">
+          <div class="text-gray-500 absolute left--3">
             {{ ['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', ''][rowIndex] }}
           </div>
           <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"
@@ -173,14 +171,14 @@
       </div>
     </div>
 
-    <div v-if="tab === '0' || tab === '2'" class="flex-1">
-      <div class="text-8 text-center">濁音</div>
+    <div v-if="tab === '0' || tab === '2'" class="w-full flex-1">
+      <div class="text-center font-bold">濁音</div>
       <div class="box px-6 yx-between">
         <div class="xy-between text-gray-500">
           <div v-for="i in ['a', 'i', 'u', 'e', 'o']" class="flex-1 xy-center">{{ i }}</div>
         </div>
         <div v-for="(row, rowIndex) in 濁音" :key="rowIndex" class="xy-between relative">
-          <div class="text-gray-500 absolute top-1.5 left--3">
+          <div class="text-gray-500 absolute left--3">
             {{ ['g', 'z', 'd', 'b', 'p',][rowIndex] }}
           </div>
           <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"
@@ -190,15 +188,15 @@
       </div>
     </div>
 
-    <div v-if="tab === '0' || tab === '3'" class="flex-1">
-      <div class="text-8 text-center">拗音</div>
+    <div v-if="tab === '0' || tab === '3'" class="w-full flex-1">
+      <div class="text-center font-bold">拗音</div>
 
       <div class="box px-6 yx-between">
         <div class="xy-between text-gray-500">
           <div v-for="i in ['ya', 'yu', 'yo',]" class="flex-1 xy-center">{{ i }}</div>
         </div>
         <div v-for="(row, rowIndex) in 拗音" :key="rowIndex" class="xy-between relative">
-          <div class="text-gray-500 absolute top-1.5 left--3">
+          <div class="text-gray-500 absolute left--3">
             {{ ['k', 's', 't', 'n', 'h', 'm', 'r', 'g', 'j', 'b', 'p'][rowIndex] }}
           </div>
           <Card v-for="(cell, cellIndex) in row" :key="cellIndex" class="cursor-pointer" :cell="cell"

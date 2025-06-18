@@ -9,11 +9,12 @@
 </script>
 
 <template>
-  <div class="flex-1 text-6 xy-center">
+  <div class="flex-1 xy-center">
     <span v-if="(displayMode === 'hiragana' || displayMode === 'both')">
       {{ cell?.hiragana }}
     </span>
-    <span v-if="(displayMode === 'katakana' || displayMode === 'both')" class="text-gray-500">
+    <span v-if="(displayMode === 'katakana' || displayMode === 'both')"
+      :class="displayMode === 'both' ? 'text-gray-500' : null">
       {{ cell?.katakana }}
     </span>
   </div>
