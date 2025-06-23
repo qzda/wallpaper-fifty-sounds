@@ -69,61 +69,10 @@
 
     ん: { start: 45, end: 46 },
   }
-
-  // const isSpeaking = ref(false)
-  // function speak(cell: Cell) {
-  //   if (!audioRef.value || voiceDisabled.value || isSpeaking.value) return
-
-  //   const timestamp = Timestamp[cell.hiragana]
-  //   if (!timestamp) {
-  //     console.warn('No timestamp found for:', cell)
-  //     return
-  //   }
-
-  //   const audio = audioRef.value
-  //   audio.pause()
-  //   audio.currentTime = 0
-  //   audio.currentTime = timestamp.start
-
-  //   // 创建时间更新处理函数
-  //   const timeUpdateHandler = () => {
-  //     if (audio.currentTime >= timestamp.end) {
-  //       audio.pause()
-  //       audio.removeEventListener('timeupdate', timeUpdateHandler)
-  //       isSpeaking.value = false
-  //     }
-  //   }
-
-  //   // 添加时间更新监听
-  //   audio.addEventListener('timeupdate', timeUpdateHandler)
-
-  //   // 开始播放
-  //   isSpeaking.value = true
-  //   audio.play().catch((error) => {
-  //     audio.pause()
-  //     audio.removeEventListener('timeupdate', timeUpdateHandler)
-  //     isSpeaking.value = false
-  //     console.error('Failed to play audio:', error)
-  //   })
-  // }
-
-  // const voiceDisabled = ref(false)
-  // const audioRef = ref<HTMLAudioElement | null>(null)
-
-  // function toggleVoice() {
-  //   voiceDisabled.value = !voiceDisabled.value
-  //   if (audioRef.value) {
-  //     audioRef.value.muted = voiceDisabled.value
-
-  //     if (voiceDisabled.value) {
-  //       audioRef.value.pause()
-  //     }
-  //   }
-  // }
 </script>
 
 <template>
-  <div class="xy flex-wrap gap-4 ws-nowrap text-4">
+  <div class="xy-center gap-4 ws-nowrap text-4">
     <div class="xy">
       <button class="btn" :class="displayMode === 'both' ? 'text-green' : null"
         @click="displayMode = 'both'">両方表示</button>
@@ -140,10 +89,6 @@
       </button>
     </div> -->
   </div>
-
-  <!-- <audio ref="audioRef" controls preload="auto" v-show="isDev">
-    <source src="./assets/fifty-sounds.mp3" type="audio/mp3" />
-  </audio> -->
 
   <div class="w-full xy items-start flex-wrap gap-8">
     <table class="flex-1">
