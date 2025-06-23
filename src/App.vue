@@ -100,10 +100,10 @@
       <tbody>
         <tr class="text-gray-500">
           <td></td>
-          <td v-for="i in ['a', 'i', 'u', 'e', 'o']" class="text-center">{{ i }}</td>
+          <td v-for="i in ['a', 'i', 'u', 'e', 'o']" class="text-4 text-center">{{ i }}</td>
         </tr>
         <tr v-for="(row, rowIndex) in 清音" :key="rowIndex" class="">
-          <td class="w-4 text-end text-gray-500">
+          <td class="w-4 text-4 text-end text-gray-500">
             {{ ['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', ''][rowIndex] }}
           </td>
 
@@ -123,10 +123,10 @@
       <tbody>
         <tr class="text-gray-500">
           <td></td>
-          <td v-for="i in ['a', 'i', 'u', 'e', 'o']" class="text-center">{{ i }}</td>
+          <td v-for="i in ['a', 'i', 'u', 'e', 'o']" class="text-4 text-center">{{ i }}</td>
         </tr>
         <tr v-for="(row, rowIndex) in 濁音" :key="rowIndex" class="">
-          <td class="w-4 text-end text-gray-500">
+          <td class="w-4 text-4 text-end text-gray-500">
             {{ ['g', 'z', 'd', 'b', 'p',][rowIndex] }}
           </td>
 
@@ -146,10 +146,10 @@
       <tbody>
         <tr class="text-gray-500">
           <td></td>
-          <td v-for="i in ['ya', 'yu', 'yo',]" class="text-center">{{ i }}</td>
+          <td v-for="i in ['ya', 'yu', 'yo',]" class="text-4 text-center">{{ i }}</td>
         </tr>
         <tr v-for="(row, rowIndex) in 拗音" :key="rowIndex" class="">
-          <td class="w-4 text-end text-gray-500">
+          <td class="w-4 text-4 text-end text-gray-500">
             {{ ['k', 's', 't', 'n', 'h', 'm', 'r', 'g', 'j', 'b', 'p'][rowIndex] }}
           </td>
 
