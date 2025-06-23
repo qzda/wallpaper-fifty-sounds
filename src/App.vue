@@ -145,52 +145,74 @@
     <source src="./assets/fifty-sounds.mp3" type="audio/mp3" />
   </audio> -->
 
-  <div class="w-full xy flex-wrap gap-8">
-    <div class="w-full flex-1">
-      <div class="text-center font-bold">清音</div>
-
-      <div class="yx-between">
-        <div class="xy-between text-gray-500">
-          <div v-for="i in ['a', 'i', 'u', 'e', 'o']" class="flex-1 xy-center">{{ i }}</div>
-        </div>
-        <div v-for="(row, rowIndex) in 清音" :key="rowIndex" class="xy-between relative">
-          <div class="text-gray-500 absolute left--3">
+  <div class="w-full xy items-start flex-wrap gap-8">
+    <table class="flex-1">
+      <thead>
+        <tr>
+          <th :colspan="清音[0].length + 1">清音</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="text-gray-500">
+          <td></td>
+          <td v-for="i in ['a', 'i', 'u', 'e', 'o']" class="text-center">{{ i }}</td>
+        </tr>
+        <tr v-for="(row, rowIndex) in 清音" :key="rowIndex" class="">
+          <td class="w-4 text-end text-gray-500">
             {{ ['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', ''][rowIndex] }}
-          </div>
-          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" :cell="cell" :displayMode="displayMode" />
-        </div>
-      </div>
-    </div>
+          </td>
 
-    <div class="w-full flex-1">
-      <div class="text-center font-bold">濁音</div>
-      <div class="yx-between">
-        <div class="xy-between text-gray-500">
-          <div v-for="i in ['a', 'i', 'u', 'e', 'o']" class="flex-1 xy-center">{{ i }}</div>
-        </div>
-        <div v-for="(row, rowIndex) in 濁音" :key="rowIndex" class="xy-between relative">
-          <div class="text-gray-500 absolute left--3">
+          <td v-for="(cell, cellIndex) in row" :key="cellIndex">
+            <Card :cell="cell" :displayMode="displayMode" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="flex-1">
+      <thead>
+        <tr>
+          <th :colspan="濁音[0].length + 1">濁音</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="text-gray-500">
+          <td></td>
+          <td v-for="i in ['a', 'i', 'u', 'e', 'o']" class="text-center">{{ i }}</td>
+        </tr>
+        <tr v-for="(row, rowIndex) in 濁音" :key="rowIndex" class="">
+          <td class="w-4 text-end text-gray-500">
             {{ ['g', 'z', 'd', 'b', 'p',][rowIndex] }}
-          </div>
-          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" :cell="cell" :displayMode="displayMode" />
-        </div>
-      </div>
-    </div>
+          </td>
 
-    <div class="w-full flex-1">
-      <div class="text-center font-bold">拗音</div>
+          <td v-for="(cell, cellIndex) in row" :key="cellIndex">
+            <Card :cell="cell" :displayMode="displayMode" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-      <div class="yx-between">
-        <div class="xy-between text-gray-500">
-          <div v-for="i in ['ya', 'yu', 'yo',]" class="flex-1 xy-center">{{ i }}</div>
-        </div>
-        <div v-for="(row, rowIndex) in 拗音" :key="rowIndex" class="xy-between relative">
-          <div class="text-gray-500 absolute left--3">
+    <table class="flex-1">
+      <thead>
+        <tr>
+          <th :colspan="拗音[0].length + 1">拗音</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="text-gray-500">
+          <td></td>
+          <td v-for="i in ['ya', 'yu', 'yo',]" class="text-center">{{ i }}</td>
+        </tr>
+        <tr v-for="(row, rowIndex) in 拗音" :key="rowIndex" class="">
+          <td class="w-4 text-end text-gray-500">
             {{ ['k', 's', 't', 'n', 'h', 'm', 'r', 'g', 'j', 'b', 'p'][rowIndex] }}
-          </div>
-          <Card v-for="(cell, cellIndex) in row" :key="cellIndex" :cell="cell" :displayMode="displayMode" />
-        </div>
-      </div>
-    </div>
+          </td>
+
+          <td v-for="(cell, cellIndex) in row" :key="cellIndex">
+            <Card :cell="cell" :displayMode="displayMode" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
