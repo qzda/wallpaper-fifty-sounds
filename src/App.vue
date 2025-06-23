@@ -9,7 +9,6 @@
   // const isDev = import.meta.env.DEV
 
   const displayMode = ref<DisplayMode>('both')
-  const tab = ref('0')
 
   const Timestamp: Record<string, Timestamp> = {
     あ: { start: 0, end: 0.8 },
@@ -124,7 +123,7 @@
 </script>
 
 <template>
-  <div class="xy flex-wrap gap-4">
+  <div class="xy flex-wrap gap-4 ws-nowrap text-4">
     <div class="xy">
       <button class="btn" :class="displayMode === 'both' ? 'text-green' : null"
         @click="displayMode = 'both'">両方表示</button>
@@ -132,13 +131,6 @@
         @click="displayMode = 'hiragana'">あ</button>
       <button class="btn" :class="displayMode === 'katakana' ? 'text-green' : null"
         @click="displayMode = 'katakana'">ア</button>
-    </div>
-
-    <div class="xy">
-      <button class="btn" :class="tab === '0' ? 'text-green' : null" @click="tab = '0'">すべて</button>
-      <button class="btn" :class="tab === '1' ? 'text-green' : null" @click="tab = '1'">清音</button>
-      <button class="btn" :class="tab === '2' ? 'text-green' : null" @click="tab = '2'">濁音</button>
-      <button class="btn" :class="tab === '3' ? 'text-green' : null" @click="tab = '3'">拗音</button>
     </div>
 
     <!-- <div class="xy">
@@ -153,11 +145,11 @@
     <source src="./assets/fifty-sounds.mp3" type="audio/mp3" />
   </audio> -->
 
-  <div class="w-full xy flex-wrap">
-    <div v-if="tab === '0' || tab === '1'" class="w-full flex-1">
+  <div class="w-full xy flex-wrap gap-8">
+    <div class="w-full flex-1">
       <div class="text-center font-bold">清音</div>
 
-      <div class="box px-6 yx-between">
+      <div class="yx-between">
         <div class="xy-between text-gray-500">
           <div v-for="i in ['a', 'i', 'u', 'e', 'o']" class="flex-1 xy-center">{{ i }}</div>
         </div>
@@ -170,9 +162,9 @@
       </div>
     </div>
 
-    <div v-if="tab === '0' || tab === '2'" class="w-full flex-1">
+    <div class="w-full flex-1">
       <div class="text-center font-bold">濁音</div>
-      <div class="box px-6 yx-between">
+      <div class="yx-between">
         <div class="xy-between text-gray-500">
           <div v-for="i in ['a', 'i', 'u', 'e', 'o']" class="flex-1 xy-center">{{ i }}</div>
         </div>
@@ -185,10 +177,10 @@
       </div>
     </div>
 
-    <div v-if="tab === '0' || tab === '3'" class="w-full flex-1">
+    <div class="w-full flex-1">
       <div class="text-center font-bold">拗音</div>
 
-      <div class="box px-6 yx-between">
+      <div class="yx-between">
         <div class="xy-between text-gray-500">
           <div v-for="i in ['ya', 'yu', 'yo',]" class="flex-1 xy-center">{{ i }}</div>
         </div>

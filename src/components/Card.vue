@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <div class="flex-1 xy-center">
+  <div class="flex-1 xy-center gap-0 ws-nowrap">
     <span v-if="(displayMode === 'hiragana' || displayMode === 'both')">
       {{ cell?.hiragana }}
     </span>
